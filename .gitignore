@@ -1,0 +1,37 @@
+node_modules/
+logs/
+coverage.html
+npm-debug.log
+.sass-cache/
+/dist
+/tmp
+package-lock.json
+yarn-error.log
+
+
+# for intelijIde
+**/.idea/
+**/target/
+**/*.iml
+**/obj/Debug
+apidoc
+
+# for visual studio
+**/.vs/
+**/bin/Microsoft.NodejsTools.WebRole.dll
+**/.suo/
+**/*.njsproj
+**/.ntvs_analysis.dat
+**/.vscode
+
+**/*.sln
+
+# Configs
+public/config.js
+
+
+#for mac
+**/.DS_Store
+
+version.txt
+KYC_CHAIN/
