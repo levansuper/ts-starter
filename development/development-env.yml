@@ -1,0 +1,44 @@
+version: '3.5'
+
+services:
+ mongo:
+   image: mongo:3.4
+   container_name: mongo
+   hostname: mongo
+   ports:
+     - "27017:27017"
+   volumes:
+     - mongodata:/data/db
+   networks:
+     - development
+   restart: unless-stopped
+ rockmongo:
+   image: webts/rockmongo
+   container_name: rockmongo
+   hostname: rockmongo
+   ports:
+     - "9090:80"
+   networks:
+     - development
+   links:
+     - mongo:db
+   environment:
+     - DB_PORT_27017_TCP_ADDR=mongo
+   restart: unless-stopped
+ redis:
+   image: bitnami/redis
+   container_name: redis
+   hostname: redis
+   ports:
+     - "6379:6379"
+   networks:
+     - development
+   environment:
+     - ALLOW_EMPTY_PASSWORD=yes
+   restart: unless-stopped
+volumes:
+  mongodata:
+  postgresdata:
+networks:
+  development:
+    name: development
