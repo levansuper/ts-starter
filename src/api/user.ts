@@ -7,22 +7,53 @@ import { Response, NextFunction, Router } from 'express';
 import { UserModel } from '../models/user';
 import { DefaultRequest } from '../etc/express/default-request';
 import DefaultResponse from '../etc/express/default-response';
+import session from '../helpers/session';
 
 var router = Router();
 
-router.post('/register', async function(
-	request: DefaultRequest<UserModel>,
-	response: DefaultResponse,
-	next: NextFunction
-) {
-	try {
-		const userData: UserModel = request.body.data;
-		const newUser = await MainManager.userManager.add(userData);
-		response.respond(newUser);
-	} catch (e) {
-		response.error(e);
+router.post(
+	'/register',
+	async (
+		request: DefaultRequest<UserModel>,
+		response: DefaultResponse,
+		next: NextFunction
+	) => {
+		try {
+			class b {
+				b: string = 'asd';
+				a: string = 'bbb';
+			}
+
+			const userData: UserModel = request.body.data;
+
+			const a: { a: string } = new b();
+			console.log(a);
+
+			const newUser = await MainManager.userManager.add(userData);
+
+			response.respond(newUser);
+		} catch (e) {
+			response.error(e);
+		}
 	}
-});
+);
+
+router.post(
+	'/auth',
+	async (
+		request: DefaultRequest<UserModel>,
+		response: DefaultResponse,
+		next: NextFunction
+	) => {
+		try {
+			const user = await MainManager.userManager.auth(request.body.data);
+			request.session.publicData.user = user;
+			response.respond();
+		} catch (e) {
+			response.error(e);
+		}
+	}
+);
 
 /*
 router.get(

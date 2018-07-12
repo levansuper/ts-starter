@@ -7,7 +7,6 @@ export interface UserModel extends Document {
 	lastName: string;
 	email: string;
 	agreement: boolean;
-	caratAmount: number;
 	role: string;
 	invitationToken: string;
 	invitationTokenSendDate: Date;
@@ -25,7 +24,6 @@ export var UserSchema: Schema = new Schema(
 		lastName: { type: String, required: true },
 		email: { type: String, required: false, unique: true, sparse: true },
 		agreement: { type: Boolean, required: true },
-		caratAmount: { type: Number, default: 0 },
 		role: { type: String },
 		invitationToken: { type: String },
 		invitationTokenSendDate: { type: Date },

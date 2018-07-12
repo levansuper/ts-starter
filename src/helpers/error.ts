@@ -43,6 +43,16 @@ const Errors = {
 		code: 'SESSION_INVALID',
 		message: 'Your session is not valid!'
 	}),
+	INVALID_CREDENTIALS: Error.build({
+		status: 401,
+		code: 'INVALID_CREDENTIALS',
+		message: 'Credentials invalid!'
+	}),
+	NOT_VERIFIED: Error.build({
+		status: 422,
+		code: 'NOT_VERIFIED',
+		message: 'The user is not virified!'
+	}),
 	INVALID_PARAMETERS: Error.build({
 		status: 422,
 		code: 'INVALID_PARAMETERS',

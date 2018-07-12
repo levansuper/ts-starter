@@ -1,28 +1,35 @@
 'use strict';
 
 import express from 'express';
-import { DefaultRequest } from './session';
 import Errors from '../../helpers/error';
-import session from '../../helpers/session';
+import { DefaultRequest } from './default-request';
+import { DefaultSession } from './session';
 
 export class Responder {
-	constructor(request: DefaultRequest, response: express.Response) {
+	constructor(request: DefaultRequest<any>, response: express.Response) {
 		this.response = response;
 		this.request = request;
 	}
 	response: express.Response;
-	request: express.Request;
-	respond(data: any): void {
-		console.log(data.constructor.name);
+	request: DefaultRequest;
+	respond(data?: any): void {
+		if (!data) {
+			data = {};
+		}
+
+		const session: DefaultSession = {};
+
 		if (data.constructor.name === 'Error') {
 			this.response.status(data.status).json({
+				success: false,
 				error: data,
-				session: this.request.session
+				session: session.publicData
 			});
 		} else {
 			this.response.json({
+				success: true,
 				data: data,
-				session: this.request.session
+				session: session.publicData
 			});
 		}
 	}

@@ -5,17 +5,6 @@ import { UserModel } from '../models/user';
 import Errors from '../helpers/error';
 
 export class UserManager {
-	/*	public async add(userData: any) {
-		if (userData.password) {
-			userData.password = encriptPassword(userData.password);
-		}
-
-		let newUser = new UserModel(userData);
-		newUser = await newUser.save();
-
-		return newUser;
-	}*/
-
 	public async add(userData: UserModel) {
 		var me = this;
 		if (userData.password) {
@@ -32,37 +21,29 @@ export class UserManager {
 
 		return await newUser.save();
 	}
+
+	public async auth(userData: UserModel) {
+		var me = this;
+
+		let foundUser = await UserModel.findOne({
+			username: userData.username,
+			password: encriptPassword(userData.password)
+		});
+
+		if (!foundUser) {
+			throw Errors.INVALID_CREDENTIALS;
+		}
+		/*
+        if (foundUser.invitationToken) {
+            throw Errors.NOT_VERIFIED;
+        }
+*/
+		return foundUser;
+	}
+
 	/*
 
-    userManager.generatePhoneToken = async function (username, cb) {
-        const me = this;
-
-        const invitationToken = getRandomInt(
-            me.app.config.app.invitationToken.min,
-            me.app.config.app.invitationToken.max);
-
-        /!*var compiledTemplate = me.app.email.templates.invite({
-            domain: me.app.config.app.websiteUrl,
-            invitationToken: invitationToken
-        });
-        var emailObj = {
-            from: me.app.config.email.mainEmail,
-            to: "aapge@mailinator.com",
-            subject: "მოგესალმებათ aap!",
-            html: compiledTemplate
-        }*!/
-        try {
-            const conf = me.app.config.sms;
-
-            const resp = await fetch(`${conf.url}?key=${conf.key}&destination=${username}&sender=${conf.sender}&content=${invitationToken}`);
-        }catch (e){
-            console.log(e);
-            return cb(me.app.errors.DB_ERROR.get());
-        }
-        /!*me.app.email.sender.send(emailObj, function (err, res) {
-        });*!/
-        cb(null, invitationToken)
-    }
+    
 
 
     userManager.passwordResetInit = function (userData, cb) {
@@ -236,28 +217,7 @@ export class UserManager {
         });
     };
 
-    userManager.auth = function (userData, cb) {
-        var me = this;
-        me.app.models.user.findOne({
-            username: userData.username,
-            password: encriptPassword(userData.password)
-        }, function (err, res) {
-            if (err) {
-                return cb(me.app.errors.DB_ERROR.get());
-            }
-
-            if (!res) {
-                cb(me.app.errors.INVALID_CREDENTIALS.get());
-                return;
-            }
-
-            /!*if (res.invitationToken) {
-                cb(me.app.errors.NOT_VERIFIED.get());
-                return;
-            }*!/
-            cb(null, res);
-        });
-    };
+    
 
     userManager.getSession = function (req, res, next) {
         var me = this;
@@ -378,7 +338,39 @@ export class UserManager {
             me.generateUniqueInvitationToken(cb)
 
         })
-    }*/
+    }
+    
+    userManager.generatePhoneToken = async function (username, cb) {
+        const me = this;
+
+        const invitationToken = getRandomInt(
+            me.app.config.app.invitationToken.min,
+            me.app.config.app.invitationToken.max);
+
+        /!*var compiledTemplate = me.app.email.templates.invite({
+            domain: me.app.config.app.websiteUrl,
+            invitationToken: invitationToken
+        });
+        var emailObj = {
+            from: me.app.config.email.mainEmail,
+            to: "aapge@mailinator.com",
+            subject: "მოგესალმებათ aap!",
+            html: compiledTemplate
+        }*!/
+        try {
+            const conf = me.app.config.sms;
+
+            const resp = await fetch(`${conf.url}?key=${conf.key}&destination=${username}&sender=${conf.sender}&content=${invitationToken}`);
+        }catch (e){
+            console.log(e);
+            return cb(me.app.errors.DB_ERROR.get());
+        }
+        /!*me.app.email.sender.send(emailObj, function (err, res) {
+        });*!/
+        cb(null, invitationToken)
+    }
+    
+    */
 }
 
 const encriptPassword = (salt: string) => {

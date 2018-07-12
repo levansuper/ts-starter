@@ -1,16 +1,17 @@
 'use strict';
 
 import express from 'express';
+import { DefaultSession } from './session';
 
-export interface DefaultRequest<Body = any> extends express.Request {
-	session: any;
+export interface ExtendedRequest<Body = any> extends express.Request {
 	body: DefaultRequestObjectObject<Body>;
 }
 
-export class DefaultRequestObjectObject<Body> {
-	data: Body;
-}
+export type DefaultRequest<Body = any> = ExtendedRequest & {
+	session: DefaultSession;
+	sessionID: any;
+};
 
-export class ClassDefaultObject<Body> {
+export class DefaultRequestObjectObject<Body> {
 	data: Body;
 }
